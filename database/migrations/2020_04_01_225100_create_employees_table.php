@@ -15,6 +15,7 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('shop_id');
             $table->string('name',50);
             $table->boolean('still_working')->default(0);
             $table->integer('salary');

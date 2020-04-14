@@ -14,7 +14,10 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <ol>
+                        <li><a href="{{route('createCategory')}}">Category</a></li>
+                        <li><a href="{{route('createSubCategory')}}">SubCategory</a></li>
+                    </ol>
                 </div>
             </div>
         </div>

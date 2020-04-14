@@ -8,20 +8,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    protected $fillable=['product_name','subcatagory_name','catagory_id'];
+    protected $fillable=['name','shop_id','subcategory_id','category_id'];
 
     /**
      * @return BelongsTo
      */
-    public function catagory() {
-        return $this->belongsTo(Catagory::class);
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 
     /**
      * @return BelongsTo
      */
-    public function subcatagory() {
-        return $this->belongsTo(SubCatagory::class);
+    public function subcategory() {
+        return $this->belongsTo(SubCategory::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function shop() {
+        return $this->belongsTo(Shop::class);
     }
 
     /**
