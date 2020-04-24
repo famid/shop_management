@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,7 +79,7 @@ Route::middleware(['shopkeeper'])->namespace('Shopkeeper')->prefix('user')->grou
     Route::post('/delete-product/id', 'ProductController@deleteProduct')->name('deleteProduct');
     Route::get('/edit-product/id', 'ProductController@editProduct')->name('editProduct');
     Route::post('/update-product/id', 'ProductController@updateProduct')->name('updateProduct');
-    Route::post('/get-specific-sub-category/id', 'ProductController@specificSubCategory')->name('specificSubCategory');
+    Route::get('/get-specific-sub-category/id', 'ProductController@specificSubCategory')->name('specificSubCategory');
     Route::post('/get-edit-modal-data/id', 'ProductController@getEditModalData')->name('getEditModalData');
 
     /*
@@ -89,9 +90,9 @@ Route::middleware(['shopkeeper'])->namespace('Shopkeeper')->prefix('user')->grou
     Route::get('/get-product-variation-list', 'ProductVariationController@getProductVariationList')->name('getProductVariationList');
     Route::get('/create-product-variation/{id}', 'ProductVariationController@createProductVariation')->name('createProductVariation');
     Route::post('/store-product-variations', 'ProductVariationController@storeProductVariations')->name('storeProductVariations');
-    //Route::post('/delete-product-variation/id', 'ProductVariationController@deleteProductVariation')->name('deleteProductVariation');
     Route::get('/edit-product-variation/{id}', 'ProductVariationController@editProductVariation')->name('editProductVariation');
     Route::post('/update-product-variation', 'ProductVariationController@updateProductVariation')->name('updateProductVariation');
+    //Route::post('/delete-product-variation/id', 'ProductVariationController@deleteProductVariation')->name('deleteProductVariation');
     /*
      * -------------------------------------------------
      * EMPLOYEE
@@ -103,4 +104,16 @@ Route::middleware(['shopkeeper'])->namespace('Shopkeeper')->prefix('user')->grou
     Route::post('/delete-employee/id', 'EmployeeController@deleteEmployee')->name('deleteEmployee');
     Route::get('/get-modal-data/id', 'EmployeeController@getModalData')->name('getModalData');
     Route::post('/update-employee/id', 'EmployeeController@updateEmployee')->name('updateEmployee');
+
+    /*
+     * ----------------------------------
+     * filter
+     * ----------------------------------
+     * */
+    Route::get('/create-filter','FilterController@createFilter')->name('createFilter');
+    Route::get('/create-employee-filter','FilterController@createEmployeeFilter')->name('createEmployeeFilter');
+    Route::get('/get-filter-result','FilterController@getFilterResult')->name('getFilterResult');
+    Route::get('/get-employee-filter-result','FilterController@getEmployeeFilterResult')->name('getEmployeeFilterResult');
+    Route::get('/export', 'FilterController@export')->name('export');
+    /*    Route::get('/search/product','FilterController@searchProduct')->name('searchProduct');*/
 });

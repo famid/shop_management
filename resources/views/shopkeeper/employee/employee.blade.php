@@ -107,7 +107,7 @@
     <script>
         $(document).ready(function () {
             getAllEmployee();
-            //Events
+    /*==========================Events=============================================*/
             $("#submit").on('click', function(){
                 let employeeName = $("#employeeName").val();
                 let salary = $("#salary").val();
@@ -139,7 +139,7 @@
                 updateEmployee(employeeId,employeeName, salary, stillWorking, startedAt, endedAt);
             });
         });
-        //Methods
+    /*===============================Methods==========================================*/
         function getModalData(employeeId){
             $.ajax({
                 url: '{{route('getModalData')}}',
@@ -167,7 +167,6 @@
                 method: 'POST',
                 data:{
                     '_token' : '{{csrf_token()}}',
-                    'shop_id' : '{{auth()->user()->id}}',
                     'name': employeeName,
                     'salary' : salary,
                     'still_working' : stillWorking,
@@ -182,6 +181,7 @@
                 console.log(error);
             });
         }
+
         function getAllEmployee() {
             $.ajax({
                 url:'{{route('getEmployeeList')}}',
@@ -193,22 +193,7 @@
                 console.log(error);
             });
         }
-        function injectDynamicDom (allEmployee) {
-            let html = '';
-            for(let i=0; i< allEmployee.length;i++) {
-                html +='<tr>' +
-                    '<td>'+allEmployee[i].name+'</td>'+
-                    '<td>'+allEmployee[i].salary+'</td>'+
-                    '<td>'+allEmployee[i].still_working+'</td>'+
-                    '<td>'+allEmployee[i].started_at+'</td>'+
-                    '<td>'+allEmployee[i].ended_at+'</td>'+
-                    '<td><button type="button" data-id="'+allEmployee[i].id+'" data-toggle="modal" data-target="#editModal" class="btn btn-outline-success float-right edit-employee"><i class="fa fa-plus"></i></button></td>'+
-                    '<td><button type="button" data-id="'+allEmployee[i].id+'" class="btn btn-outline-danger float-right delete-employee"> <i class="fa fa-plus"></i></button></td>'+
-                    '</tr>'+
-                    '<hr>';
-            }
-            $("tbody").html(html);
-        }
+
         function deleteEmployee(employeeId) {
             $.ajax({
                 url:'{{route('deleteEmployee')}}',
@@ -224,6 +209,7 @@
                 console.log(error);
             });
         }
+
         function updateEmployee(employeeId,employeeName, salary, stillWorking, startedAt, endedAt) {
             $.ajax({
                 url: '{{route('updateEmployee')}}',
@@ -245,6 +231,23 @@
             }).fail(function (error) {
                 console.log(error);
             });
+        }
+
+        function injectDynamicDom (allEmployee) {
+            let html = '';
+            for(let i=0; i< allEmployee.length;i++) {
+                html +='<tr>' +
+                    '<td>'+allEmployee[i].name+'</td>'+
+                    '<td>'+allEmployee[i].salary+'</td>'+
+                    '<td>'+allEmployee[i].still_working+'</td>'+
+                    '<td>'+allEmployee[i].started_at+'</td>'+
+                    '<td>'+allEmployee[i].ended_at+'</td>'+
+                    '<td><button type="button" data-id="'+allEmployee[i].id+'" data-toggle="modal" data-target="#editModal" class="btn btn-outline-success float-right edit-employee"><i class="fa fa-plus"></i></button></td>'+
+                    '<td><button type="button" data-id="'+allEmployee[i].id+'" class="btn btn-outline-danger float-right delete-employee"> <i class="fa fa-plus"></i></button></td>'+
+                    '</tr>'+
+                    '<hr>';
+            }
+            $("tbody").html(html);
         }
 
         function resetInputFields() {

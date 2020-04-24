@@ -105,7 +105,7 @@
         $(document).ready(function () {
             $(".sub-category-div").hide();
             getAllProduct();
-            //Events
+    /*============================Events=======================================*/
             $("#categoryNameList").on('click', function () {
                 let categoryId = $("#categoryNameList").val();
                 if (categoryId == null) {
@@ -153,7 +153,7 @@
 
         });
 
-        //Methods
+/*================================Methods=========================================*/
 
         function saveProduct(productName, categoryId, subCategoryId) {
             $.ajax({
@@ -227,7 +227,7 @@
         function specificSubCategory(categoryId, checkCreateOrUpdateSubCategory) {
             $.ajax({
                 url: '{{route('specificSubCategory')}}',
-                method: 'POST',
+                method: 'GET',
                 data: {
                     '_token': '{{csrf_token()}}',
                     'id': categoryId
@@ -335,7 +335,6 @@
             } else if (checkCreateOrUpdateSubCategory === "createSubCategory") {
                 $('#subCategoryNameList').html(html);
             }
-
         }
 
     </script>

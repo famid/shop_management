@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -17,6 +16,8 @@
                         <ol>
                             <li><a href="{{route('createProduct')}}">Product</a></li>
                             <li><a href="{{route('createEmployee')}}">Employee</a></li>
+                            <li><a href="{{route('createFilter')}}">Filter</a></li>
+                            <li><a href="{{route('createEmployeeFilter')}}">Employee Filter</a></li>
                         </ol>
                     </div>
                 </div>

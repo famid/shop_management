@@ -9,13 +9,14 @@ use App\Models\ProductVariation;
 
 class ProductVariationService
 {
+    protected $errorResponse;
     /**
      * ProductVariationService constructor.
      */
     public function __construct() {
         $this->errorResponse = [
             'success' => true,
-            'message' =>'someting went wrong'
+            'message' =>'something went wrong'
         ];
     }
 
@@ -52,7 +53,6 @@ class ProductVariationService
      */
     protected function productVariationData ($data) {
         /*
-
         --------------------------------------------------
         This is what we will receive
 
@@ -109,10 +109,10 @@ class ProductVariationService
             $allProductVariationData = $this->productVariationData($data);
             foreach ($allProductVariationData as $key => $productVariationData) {
                 $createProductVariationResponse = ProductVariation::create($productVariationData);
-            }
-            if (!$createProductVariationResponse) {
+                if (!$createProductVariationResponse) {
 
-                return $this->errorResponse;
+                    return $this->errorResponse;
+                }
             }
 
             return ['success' => true, 'message' => 'product variation has been stored successfully'];

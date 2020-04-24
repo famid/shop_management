@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shopkeeper;
 
+use App\Models\Shop;
 use App\Services\EmployeeService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -36,7 +37,6 @@ class EmployeeController extends Controller
      */
     public function storeEmployee(Request $request) {
        $rules = [
-            'shop_id' => 'integer',
             'name' => 'string',
             'salary' => 'integer',
             'still_working' => 'boolean',
@@ -51,7 +51,6 @@ class EmployeeController extends Controller
         $startedAt = Carbon::parse($request->started_at);
         $endedAt = Carbon::parse($request->ended_at);
         $createEmployeeResponse = $this->employeeService->create(
-            $request->shop_id,
             $request->name,
             $request->still_working,
             $request->salary,
@@ -72,9 +71,11 @@ class EmployeeController extends Controller
      * @return JsonResponse
      */
     public function getEmployeeList () {
-        $allEmployee = $this->employeeService->getAllEmployee();
+        $getAllEmployeeResponse = $this->employeeService->getAllEmployee();
+        $success = $getAllEmployeeResponse['success'] ? true:false;
+        $allEmployee = $getAllEmployeeResponse['success'] ? $getAllEmployeeResponse['data']:'';
 
-        return response()->json(['success' => true, 'allEmployee' => $allEmployee]);
+        return response()->json(['success' => $success, 'allEmployee' => $allEmployee]);
     }
 
     /**
@@ -139,7 +140,5 @@ class EmployeeController extends Controller
         return response()->json([
             'getModalData' => $getModalData
         ]);
-
-
     }
 }

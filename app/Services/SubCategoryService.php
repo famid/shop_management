@@ -5,15 +5,25 @@ namespace App\Services;
 
 
 use App\Models\SubCategory;
+use Illuminate\Database\Eloquent\Collection;
 
 class SubCategoryService
 {
+    protected $errorResponse;
+
+    /**
+     * SubCategoryService constructor.
+     */
     public function __construct() {
         $this->errorResponse = [
             'success' => true,
             'message' => 'something went wrong'
         ];
     }
+
+    /**
+     * @return SubCategory[]|Collection
+     */
     public function getAllSubCategory () {
 
         return SubCategory::all();

@@ -5,10 +5,13 @@ namespace App\Services;
 
 
 use App\Models\Employee;
+use App\Models\Shop;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeService
 {
+    protected $errorResponse;
     /**
      * EmployeeService constructor.
      */
@@ -23,8 +26,14 @@ class EmployeeService
      * @return Employee[]|Collection
      */
     public function getAllEmployee () {
+        $shopId = Shop::where('user_id', Auth::id())->first()->id;
+        $allEmployee = Shop::find ($shopId)->employees;
+        if(!$allEmployee->isEmpty()){
 
-        return Employee::all();
+            return ['success' => true, 'data' => $allEmployee];
+        }
+
+        return ['success' => false, 'data' => null];
     }
 
     /**
@@ -55,7 +64,8 @@ class EmployeeService
      * @param string $endedAt
      * @return array
      */
-    public function create (int $shopId, string $employeeName, bool $stillWorking, int $salary , string $startedAt, string $endedAt) {
+    public function create (string $employeeName, bool $stillWorking, int $salary , string $startedAt, string $endedAt) {
+        $shopId = Shop::where('user_id', Auth::id())->first()->id;
         try {
            $createEmployeeResponse = Employee::create([
                'shop_id' => $shopId,
@@ -121,10 +131,7 @@ class EmployeeService
                 return $this->errorResponse;
             }
 
-            return [
-                'success' => true,
-                'message' => 'employee has been deleted successfully'
-            ];
+            return ['success' => true, 'message' => 'employee has been deleted successfully'];
         } catch (\Exception $e) {
 
             return $this->errorResponse;

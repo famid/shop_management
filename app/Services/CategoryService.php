@@ -9,7 +9,6 @@ use App\Models\Category;
 class CategoryService
 {
     protected $errorResponse;
-
     /**
      * CategoryService constructor.
      */
@@ -99,9 +98,6 @@ class CategoryService
             return $this->errorResponse;
         }
 
-        return [
-            'success' => true,
-            'message' => 'Category has been deleted successfully'
-        ];
+        return ['success' => true, 'message' => 'Category has been deleted successfully'];
     }
 }

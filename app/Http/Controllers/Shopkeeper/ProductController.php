@@ -17,7 +17,6 @@ class ProductController extends Controller
     /**
      * ProductController constructor.
      */
-
     public function __construct() {
         $this->productService = new ProductService();
     }
@@ -25,13 +24,16 @@ class ProductController extends Controller
     /**
      * @return Factory|View
      */
-
     public function createProduct() {
         $category['categories'] = Category::all();
 
         return view("shopkeeper.product.product", $category);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function specificSubCategory(Request $request) {
         $specificSubcategory = $this->productService->getSpecificSubCategory($request->id);
         $getSubCategory = $specificSubcategory['success'] ? $specificSubcategory['data'] : [];
@@ -39,19 +41,21 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => $success,
-            'getSubCategory' => $getSubCategory
+            'getSubCategory' => $getSubCategory,
+            'message' => $specificSubcategory['message']
         ]);
     }
 
     /**
      * @return JsonResponse
      */
-
     public function getProductList() {
-        $allProduct = $this->productService->getAllProduct();
+        $getAllProductResponse = $this->productService->getAllProduct();
+        $success = $getAllProductResponse['success'] ? true:false;
+         $allProduct = $getAllProductResponse['success'] ? $getAllProductResponse['data']:'';
 
         return response()->json([
-            'success' => true,
+            'success' => $success,
             'allProduct' => $allProduct
         ]);
     }
@@ -131,7 +135,6 @@ class ProductController extends Controller
        * @param Request $request
        * @return JsonResponse
        */
-
       public  function  deleteProduct (Request $request) {
           $rules = ['id' => 'integer'];
           $validator = Validator::make($request->all(), $rules);
@@ -157,11 +160,26 @@ class ProductController extends Controller
           ]);
       }
 
-      public function getEditModalData(Request $request) {
-          $data = $this->productService->getProductEditModalData($request->id);
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getEditModalData(Request $request) {
+          $rules = ['id' => 'integer'];
+          $validator = Validator::make($request->all(), $rules);
+          if ($validator->fails()){
+
+              return response()->json(['success' => false, 'error' => $validator->errors()->first()]);
+          }
+          $productEditModalDataResponse= $this->productService->getProductEditModalData($request->id);
+          $success = $productEditModalDataResponse['success'] ? true:false;
+          $productEditModalData = $productEditModalDataResponse['success'] ? $productEditModalDataResponse['data'] :'';
+          $message = $productEditModalDataResponse['success'] ? $productEditModalDataResponse['message'] : $productEditModalDataResponse['message'];
 
           return response()->json([
-              'data' => $data
+              'success' => $success,
+              'message' => $message,
+              'data' =>  $productEditModalData
           ]);
       }
 }

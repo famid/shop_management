@@ -5,8 +5,9 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Shop;
 use App\Models\SubCategory;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -26,11 +27,17 @@ class ProductService
     }
 
     /**
-     * @return Product[]|Collection
+     * @return array
      */
     public function getAllProduct () {
+        $shopId = Shop::where('user_id', Auth::id())->first()->id;
+        $allProduct = Shop::find($shopId)->products;
+        if(!$allProduct->isEmpty()){
 
-        return Product::all();
+            return ['success' => true, 'data' => $allProduct];
+        }
+
+        return ['success' => false, 'data' => null];
     }
 
     /**
@@ -149,24 +156,37 @@ class ProductService
         }
     }
 
+    /**
+     * @param $productId
+     * @return array
+     */
     public function getProductEditModalData($productId) {
-        $data['product'] = Product::select(
-                'products.id as product_id',
+        try{
+            $data['product'] = Product::select(
+                /*'products.id as product_id',
                 'products.name as product_name',
                 'products.category_id',
-                'products.subcategory_id',
+                'products.subcategory_id',*/
                 'categories.id as category_id',
                 'categories.name as category_name',
                 'sub_categories.id as subcategory_id',
                 'sub_categories.name as subcategory_name'
             )
-            ->leftJoin('categories', ['products.category_id' => 'categories.id'])
-            ->leftJoin('sub_categories', ['products.subcategory_id' => 'sub_categories.id'])
-            ->where('products.id', $productId)
-            ->first();
-        $data['categories'] = Category::all();
-        $data['subCategories'] = SubCategory::where('category_id', $data['product']->category_id)->get();
+                ->leftJoin('categories', ['products.category_id' => 'categories.id'])
+                ->leftJoin('sub_categories', ['products.subcategory_id' => 'sub_categories.id'])
+                ->where('products.id', $productId)
+                ->first();
+            $data['categories'] = Category::all();
+            $data['subCategories'] = SubCategory::where('category_id', $data['product']->category_id)->get();
+            if(($data['subCategories']->isEmpty()) == false && is_null($data['product']) == false){
 
-        return $data;
+                return ['success' => true , 'message'=> 'product DATA found' ,'data' => $data];
+            }
+
+            return $this->errorResponse;
+        }catch(\Exception $e) {
+
+            return ['success' => false, 'message' => [$e->getMessage()]];
+        }
     }
 }

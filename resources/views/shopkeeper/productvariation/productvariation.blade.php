@@ -86,7 +86,6 @@
 
                     $("#submitProductVariations").on('click', function () {
                         let productId = $('#productId').val();
-                        console.log(productId);
                         let quantities = [];
                         $('input[name^="quantity"]').each(function() {
                             quantities.push($(this).val());

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
 
+    /**
+     * @param $data
+     * @return array|mixed
+     */
     public function userRegistration($data) {
         try {
             DB::beginTransaction();
@@ -35,9 +39,14 @@ class UserService
 
             return ['success' => false, 'message' => [$e->getMessage()]];
         }
-
     }
 
+    /**
+     * @param $shopName
+     * @param $shopSize
+     * @param $userId
+     * @return array
+     */
     protected function createShop($shopName, $shopSize, $userId) {
         try {
             $shop = Shop::create([
@@ -45,8 +54,8 @@ class UserService
                 'size' => $shopSize,
                 'user_id' => $userId
             ]);
-
             if (is_null($shop)) {
+
                 return ['success' => false, 'message' => 'Something went wrong!'];
             }
 
@@ -57,6 +66,10 @@ class UserService
         }
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
     protected function createUser($data) {
         try {
             $user = User::create([
@@ -64,8 +77,8 @@ class UserService
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
-
             if (is_null($user)) {
+
                 return ['success' => false, 'message' => 'Something went wrong!'];
             }
 
